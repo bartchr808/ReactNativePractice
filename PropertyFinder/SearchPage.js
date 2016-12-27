@@ -54,7 +54,7 @@ var styles = StyleSheet.create({
     height: 36,
     padding: 4,
     marginRight: 5,
-    flex: 3,
+    flex: 4,
     fontSize: 18,
     borderWidth: 1,
     borderColor: '#48BBEC',
@@ -90,7 +90,7 @@ class SearchPage extends Component {
 
           <TouchableHighlight style={styles.button}
             underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Locatvvvvion</Text>
+            <Text style={styles.buttonText}>Location</Text>
           </TouchableHighlight>
 
       </View>
