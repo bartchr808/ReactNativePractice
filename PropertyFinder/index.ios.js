@@ -2,6 +2,7 @@
 
 var React = require('react')
 var ReactNative = require('react-native')
+var SearchPage = require('./SearchPage');
 
 var styles = ReactNative.StyleSheet.create({
   text: {
@@ -15,12 +16,13 @@ var styles = ReactNative.StyleSheet.create({
   }
 });
 
+/*
 class HelloWorld extends React.Component {
   render() {
     return <ReactNative.Text style={styles.text}>Hello World (Again)</ReactNative.Text>;
   }
 }
-
+*/
 
 /*
 This constructs a navigation controller, applies a style and sets the initial route to the HelloWorld component.
@@ -32,7 +34,7 @@ class PropertyFinderApp extends React.Component {
         style={styles.container}
         initialRoute={{
           title: 'Property Finder',
-          component: HelloWorld,
+          component: SearchPage,
         }}/>
     );
   }
