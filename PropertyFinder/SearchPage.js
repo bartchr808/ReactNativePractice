@@ -60,6 +60,10 @@ var styles = StyleSheet.create({
     borderColor: '#48BBEC',
     borderRadius: 8,
     color: '#48BBEC'
+  },
+  image: {
+  width: 217,
+  height: 138
   }
 });
 
@@ -69,7 +73,23 @@ var styles = StyleSheet.create({
 
 
 class SearchPage extends Component {
+
+  constructor(props) {
+    super(props);
+    // This sets the TextInput value property — that is, the text displayed to the user — to the current value of the searchString state variable.
+    this.state = {
+      searchString: 'london'
+    };
+  }
+
+  // This takes the value from the native browser event’s text property and uses it to update the component’s state.
+  onSearchTextChanged(event) {
+  console.log('onSearchTextChanged');
+  this.setState({ searchString: event.nativeEvent.text });
+  console.log(this.state.searchString);
+  }
   render() {
+    console.log('SearchPage.render');
     return (
       <View style={styles.container}>
         <Text style={styles.description}>
@@ -81,18 +101,19 @@ class SearchPage extends Component {
         <View style={styles.flowRight}>
           <TextInput
             style={styles.searchInput}
+            value={this.state.searchString}
+            onChange={this.onSearchTextChanged.bind(this)}
             placeholder='Search via name or postcode'/>
           <TouchableHighlight style={StyleSheet.flatten([styles.button, styles.buttonGo])}
             underlayColor='#99d9f4'>
             <Text style={styles.buttonText}>Go</Text>
           </TouchableHighlight>
         </View>
-
-          <TouchableHighlight style={styles.button}
-            underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Location</Text>
-          </TouchableHighlight>
-
+        <TouchableHighlight style={styles.button}
+          underlayColor='#99d9f4'>
+          <Text style={styles.buttonText}>Location</Text>
+        </TouchableHighlight>
+        <Image source={require('./Resources/house.png')} style={styles.image}/>
       </View>
     );
 
