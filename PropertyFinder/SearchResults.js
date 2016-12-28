@@ -14,6 +14,10 @@ var PropertyView = require('./PropertyView');
 
 //StyleSheet
 var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
   thumb: {
     width: 80,
     height: 80,
@@ -57,8 +61,8 @@ class SearchResults extends Component {
 
     this.props.navigator.push({
       title: "Property",
-      component: PropertyView,
-      passProps: {property: property}
+      key: 'propView',
+      property: property
     });
   }
 
@@ -94,9 +98,11 @@ class SearchResults extends Component {
 
   render() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderRow.bind(this)}/>
+      <View style={styles.container}>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow.bind(this)}/>
+      </View>
     );
   }
 

@@ -24,8 +24,8 @@ var styles = StyleSheet.create({
   container: {
     padding: 30,
     marginTop: 65,
-
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
   flowRight: {
     flexDirection: 'row',
@@ -100,6 +100,8 @@ class SearchPage extends Component {
       isLoading: false,
       message: ''
     };
+
+  this._handleResponse=this._handleResponse.bind(this);
   }
   _executeQuery(query) {
     console.log(query);
@@ -135,8 +137,8 @@ class SearchPage extends Component {
       // Navigates to SearchResults component and passes in the listings from the API request.
       this.props.navigator.push({
         title: 'Results',
-        component: SearchResults,
-        passProps: {listings: response.listings}
+        key: 'searchRes',
+        listings: response.listings,
       });
     } else {
         this.setState({ message: 'Location not recognized; please try again.'});

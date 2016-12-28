@@ -5,6 +5,8 @@
 var SearchPage = require('./SearchPage');
 import React, { Component } from 'react';
 import { Text, Navigator, TouchableHighlight, StyleSheet, AppRegistry } from 'react-native';
+var PropertyView = require('./PropertyView');
+var SearchResults = require('./SearchResults');
 
 var styles = StyleSheet.create({
   text: {
@@ -36,15 +38,28 @@ class PropertyFinderApp extends Component {
         style={styles.container}
         initialRoute={{
           title: 'Property Finder',
-          component: SearchPage,
+          key: 'propFinder'
         }}
         renderScene={(route, navigator) =>
-          <SearchPage/>
+          { console.log(route);
+            if (route.key == 'propFinder'){
+              return <SearchPage  navigator={navigator}/>
+            }
+            else if (route.key == 'searchRes'){
+              return <SearchResults listings={route.listings} navigator={navigator}/>
+            }
+            return <PropertyView property={route.property} navigator={navigator}/>
+          }
         }/>
     );
   }
 }
 
+//
+// const test = () => 'hello';
+// const test = () => {
+// return 'hello';
+// }
 
 
 

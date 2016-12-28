@@ -12,7 +12,9 @@ import {
 // StyleSheet
 var styles = StyleSheet.create({
   container: {
-    marginTop: 65
+    paddingTop: 65,
+    backgroundColor: 'white',
+    flex: 1
   },
   heading: {
     backgroundColor: '#F8F8F8',
