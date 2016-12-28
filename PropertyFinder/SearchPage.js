@@ -71,6 +71,23 @@ var styles = StyleSheet.create({
 //   <Text>hello</Text>
 // </View>
 
+function urlForQueryAndPage(key, value, pageNumber) {
+  var data = {
+      country: 'uk',
+      pretty: '1',
+      encoding: 'json',
+      listing_type: 'buy',
+      action: 'search_listings',
+      page: pageNumber
+  };
+  data[key] = value;
+
+  var querystring = Object.keys(data)
+    .map(key => key + '=' + encodeURIComponent(data[key]))
+    .join('&');
+
+  return 'http://api.nestoria.co.uk/api?' + querystring;
+};
 
 class SearchPage extends Component {
 
@@ -78,17 +95,52 @@ class SearchPage extends Component {
     super(props);
     // This sets the TextInput value property — that is, the text displayed to the user — to the current value of the searchString state variable.
     this.state = {
-      searchString: 'london'
+      searchString: 'London',
+      isLoading: false,
+      message: ''
     };
+  }
+  _executeQuery(query) {
+    console.log(query);
+    this.setState({ isLoading: true });
+    fetch(query)
+      .then(response => response.json())
+      .then(json => this._handleResponse(json.response))
+      .catch(error =>{
+        console.log(error);
+        this.setState({
+          isLoading: false,
+          message: 'Something bad happened ' + error
+      })});
+  }
+
+  onSearchPressed() {
+    var query = urlForQueryAndPage('place_name', this.state.searchString, 1);
+    this._executeQuery(query);
   }
 
   // This takes the value from the native browser event’s text property and uses it to update the component’s state.
   onSearchTextChanged(event) {
-  console.log('onSearchTextChanged');
-  this.setState({ searchString: event.nativeEvent.text });
-  console.log(this.state.searchString);
+    console.log('onSearchTextChanged');
+    this.setState({ searchString: event.nativeEvent.text });
+    console.log(this.state.searchString);
   }
+
+  // This clears isLoading and logs the number of properties found if the query was successful.
+  _handleResponse(response) {
+    this.setState({ isLoading: false , message: '' });
+    if (response.application_response_code.substr(0, 1) === '1') {
+      console.log('Properties found: ' + response.listings.length);
+    } else {
+        this.setState({ message: 'Location not recognized; please try again.'});
+      }
+  }
+
   render() {
+    var spinner = this.state.isLoading ?
+      ( <ActivityIndicator
+        size='large'/> ) :
+      ( <View/>);
     console.log('SearchPage.render');
     return (
       <View style={styles.container}>
@@ -104,7 +156,7 @@ class SearchPage extends Component {
             value={this.state.searchString}
             onChange={this.onSearchTextChanged.bind(this)}
             placeholder='Search via name or postcode'/>
-          <TouchableHighlight style={StyleSheet.flatten([styles.button, styles.buttonGo])}
+          <TouchableHighlight onPress={this.onSearchPressed.bind(this)} style={StyleSheet.flatten([styles.button, styles.buttonGo])}
             underlayColor='#99d9f4'>
             <Text style={styles.buttonText}>Go</Text>
           </TouchableHighlight>
@@ -114,6 +166,8 @@ class SearchPage extends Component {
           <Text style={styles.buttonText}>Location</Text>
         </TouchableHighlight>
         <Image source={require('./Resources/house.png')} style={styles.image}/>
+        {spinner}
+        <Text style={styles.description}>{this.state.message}</Text>
       </View>
     );
 
