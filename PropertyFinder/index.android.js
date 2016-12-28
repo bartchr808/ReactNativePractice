@@ -1,53 +1,55 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+'use strict'
 
+//var React = require('react')
+//var ReactNative = require('react-native')
+var SearchPage = require('./SearchPage');
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { Text, Navigator, TouchableHighlight, StyleSheet, AppRegistry } from 'react-native';
 
-export default class PropertyFinder extends Component {
+var styles = StyleSheet.create({
+  text: {
+    color: 'black',
+    backgroundColor: 'white',
+    fontSize: 30,
+    margin: 80
+  },
+  container: {
+    flex: 1
+  }
+});
+
+/*
+class HelloWorld extends React.Component {
+  render() {
+    return <ReactNative.Text style={styles.text}>Hello World (Again)</ReactNative.Text>;
+  }
+}
+*/
+
+/*
+This constructs a navigation controller, applies a style and sets the initial route to the HelloWorld component.
+ */
+class PropertyFinderApp extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <Navigator
+        style={styles.container}
+        initialRoute={{
+          title: 'Property Finder',
+          component: SearchPage,
+        }}
+        renderScene={(route, navigator) =>
+          <SearchPage/>
+        }/>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
-AppRegistry.registerComponent('PropertyFinder', () => PropertyFinder);
+
+
+
+/*
+Don't remove: AppRegistry defines the entry point to the application and provides the root component.
+ */
+AppRegistry.registerComponent('PropertyFinder', function() { return PropertyFinderApp });

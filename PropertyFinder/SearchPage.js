@@ -137,10 +137,25 @@ class SearchPage extends Component {
         title: 'Results',
         component: SearchResults,
         passProps: {listings: response.listings}
-});
+      });
     } else {
         this.setState({ message: 'Location not recognized; please try again.'});
-      }
+    }
+  }
+
+  onLocationPressed() {
+    navigator.geolocation.getCurrentPosition(
+      location => {
+        var search = location.coords.latitude + ',' + location.coords.longitude;
+        this.setState({ searchString: search });
+        var query = urlForQueryAndPage('centre_point', search, 1);
+        this._executeQuery(query);
+      },
+      error => {
+        this.setState({
+          message: 'There was a problem with obtaining your location: ' + error
+        });
+      });
   }
 
   render() {
@@ -170,7 +185,7 @@ class SearchPage extends Component {
         </View>
         <TouchableHighlight style={styles.button}
           underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>Location</Text>
+          <Text style={styles.buttonText} onPress={this.onLocationPressed.bind(this)}>Location</Text>
         </TouchableHighlight>
         <Image source={require('./Resources/house.png')} style={styles.image}/>
         {spinner}
