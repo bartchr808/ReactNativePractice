@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Image
 } from 'react-native';
+var SearchResults = require('./SearchResults');
 
 // StyleSheet
 var styles = StyleSheet.create({
@@ -131,6 +132,12 @@ class SearchPage extends Component {
     this.setState({ isLoading: false , message: '' });
     if (response.application_response_code.substr(0, 1) === '1') {
       console.log('Properties found: ' + response.listings.length);
+      // Navigates to SearchResults component and passes in the listings from the API request.
+      this.props.navigator.push({
+        title: 'Results',
+        component: SearchResults,
+        passProps: {listings: response.listings}
+});
     } else {
         this.setState({ message: 'Location not recognized; please try again.'});
       }
